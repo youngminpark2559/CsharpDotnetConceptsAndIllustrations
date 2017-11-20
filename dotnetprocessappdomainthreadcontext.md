@@ -1,0 +1,2 @@
+![](/assets/DotnetProcessAppdomainThreadContext.png)
+
