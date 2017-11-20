@@ -1,4 +1,6 @@
-# My Awesome Book
+# Csharp Dotnet Concepts And Illustrations
 
-This file file serves as your book's preface, a great place to describe your book's content and ideas.aaaaaaaaaaa
+Contents of this book is under being reviewed and fixed.
+
+Some contents could contain wrong concepts.
 
