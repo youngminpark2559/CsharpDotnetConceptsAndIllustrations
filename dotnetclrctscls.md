@@ -1,0 +1,2 @@
+![](/assets/DotnetClrCtsClsBaseclass.png)
+
