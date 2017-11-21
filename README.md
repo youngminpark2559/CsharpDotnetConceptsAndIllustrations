@@ -14,5 +14,9 @@ And zoom in your web browser.
 
 Or you can see raw images on the following Github repository:
 
-https://github.com/youngmtool/CsharpDotnetConceptsAndIllustrations
+[https://github.com/youngmtool/CsharpDotnetConceptsAndIllustrations](https://github.com/youngmtool/CsharpDotnetConceptsAndIllustrations)
+
+3. This book is hosted by Gitbook on this domain:
+
+https://youngmtool.gitbooks.io/csharpdotnetconceptsandillustrations
 
