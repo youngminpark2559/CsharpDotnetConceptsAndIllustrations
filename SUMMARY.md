@@ -8,4 +8,5 @@
 * [CreateAssemblyByILlanguage](createassemblybyillanguage.md)
 * [DotnetClrCtsClsBaseclass](dotnetclrctscls.md)
 * [DotnetVersionHistory](dotnetversionhistory.md)
+* [ManagedUnmanagedCodeAppAndPlatform](managedunmanagedcodeappandplatform.md)
 
