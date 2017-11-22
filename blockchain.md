@@ -1,4 +1,4 @@
-Illustrations: 3
+Illustrations: 4
 
 LargeviewOfBlockchain.png![](/assets/LargeviewOfBlockchain.png)
 
