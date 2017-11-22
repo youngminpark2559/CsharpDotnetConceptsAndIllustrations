@@ -1,4 +1,4 @@
-![](/assets/ManagedUnmanagedCodeAppAndPlatform.png)![](/assets/ManagedUnmanagedCodeAppAndPlatform.png)
+![](/assets/ManagedUnmanagedCodeAppAndPlatform.png)
 
 Ref.
 
