@@ -8,7 +8,11 @@ o Andrew Troelsen and Philip Japikse - C\# 6.0 and the .NET 4.6 Framework
 
 DotnetProcessAppdomainThreadContext
 
-![](/assets/DotnetProcessAppdomainThreadContext2.png)
+![](/assets/DotnetProcessAppdomainThreadContext2.png)o Threads can be allocated across the location of the AppDomains and Context boundaries by the Windows OS thread scheduler and the CLR.
+
+Even active threads can be moved to other AppDomains and Context boundaries by the CLR to fit the perfomance.
+
+But it's impossible for a single thread to be working in more than one AppDomain at once.
 
 ==============================================================================================
 
