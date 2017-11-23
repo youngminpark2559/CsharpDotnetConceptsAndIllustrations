@@ -8,7 +8,9 @@ o Andrew Troelsen and Philip Japikse - C\# 6.0 and the .NET 4.6 Framework
 
 DotnetProcessAppdomainThreadContext
 
-![](/assets/DotnetProcessAppdomainThreadContext.png)==============================================================================================
+![](/assets/DotnetProcessAppdomainThreadContext2.png)
+
+==============================================================================================
 
 LoadingStoringValueInILcode![](/assets/LoadingStoringValueInILcode.png)================================================================================================
 
