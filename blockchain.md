@@ -2,11 +2,15 @@ Illustrations: 4
 
 LargeviewOfBlockchain.png![](/assets/LargeviewOfBlockchain.png)
 
-Blockheader.png![](/assets/Blockheader.png)
+================================================================================================
+
+Blockheader.png![](/assets/Blockheader.png)================================================================================================
 
 TransactionSendReceiveCoins.png
 
 ![](/assets/TransactionSendReceiveCoins.png)
+
+================================================================================================
 
 TransactionPartOfBlock.png
 
