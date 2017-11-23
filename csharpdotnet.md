@@ -52,3 +52,13 @@ ManagedUnmanagedCodeAppAndPlatform
 
 o Andrew Troelsen and Philip Japikse - C\# 6.0 and the .NET 4.6 Framework
 
+================================================================================================
+
+ThreadAndSynchronous![](/assets/ThreadAndSynchronous.png)Ref.
+
+o https://codewala.net/2015/07/29/concurrency-vs-multi-threading-vs-asynchronous-programming-explained/
+
+================================================================================================
+
+ConcurrencyByMultithreadAndAsynchronous![](/assets/ConcurrencyByMultithreadAndAsynchronous.png)
+
