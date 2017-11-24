@@ -64,3 +64,9 @@ AsyncAwait![](/assets/AsyncAwait.png)o The thing you should note is that when yo
 
 That is decided by the CLR, however, CLR allocates the task which you're trying to process asynchronously on another thread against the calling thread as it can as possible.
 
+==============================================================================================
+
+DelegateAndAsyncButCallingThreadGotBlockedWithWaitingResultFromOtherThread![](/assets/DelegateAndAsyncButCallingThreadGotBlockedWithWaitingResultFromOtherThread.png)Ref.
+
+o Andrew Troelsen and Philip Japikse - C\# 6.0 and the .NET 4.6 Framework
+
