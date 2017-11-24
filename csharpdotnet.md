@@ -60,5 +60,7 @@ o [https://codewala.net/2015/07/29/concurrency-vs-multi-threading-vs-asynchronou
 
 ConcurrencyByMultithreadAndAsynchronous![](/assets/ConcurrencyByMultithreadAndAsynchronous.png)==================================================================================================
 
-AsyncAwait![](/assets/AsyncAwait.png)
+AsyncAwait![](/assets/AsyncAwait.png)o The thing you should note is that when you use async and await feature you don't know that the task which you're trying to process asynchronously is process in another thread or same thread.
+
+That is decided by the CLR, however, CLR allocates the task which you're trying to process asynchronously on another thread against the calling thread as it can as possible.
 
