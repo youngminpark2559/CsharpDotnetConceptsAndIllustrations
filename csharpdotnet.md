@@ -56,9 +56,11 @@ ThreadAndSynchronous![](/assets/ThreadAndSynchronous.png)Ref.
 
 o [https://codewala.net/2015/07/29/concurrency-vs-multi-threading-vs-asynchronous-programming-explained/](https://codewala.net/2015/07/29/concurrency-vs-multi-threading-vs-asynchronous-programming-explained/)
 
-================================================================================================
+===============================================================================================
 
-ConcurrencyByMultithreadAndAsynchronous![](/assets/ConcurrencyByMultithreadAndAsynchronous.png)==================================================================================================
+ConcurrencyByMultithreadAndAsynchronous![](/assets/ConcurrencyByMultithreadAndAsynchronous2.png)
+
+===============================================================================================
 
 AsyncAwait![](/assets/AsyncAwait.png)o The thing you should note is that when you use "async and await" feature you're not going to sure whether the task which you're trying to process asynchronously is processed on another thread or same calling thread.
 
@@ -70,7 +72,7 @@ DelegateAndAsyncButCallingThreadGotBlockedWithWaitingResultFromOtherThread![](/a
 
 o Andrew Troelsen and Philip Japikse - C\# 6.0 and the .NET 4.6 Framework
 
-================================================================================================
+============================================================================================
 
 AsyncCallBackInDelegate
 
