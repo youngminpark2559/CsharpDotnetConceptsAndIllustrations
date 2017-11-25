@@ -100,6 +100,10 @@ Using lock keyword is converted to the Monitor using after compiled.
 
 3.\[Synchronization\] attribute.
 
+This way can be simple but lazy.
+
+The downfall of this way is that this way makes code rigid because all other codes which doesn't need to be thread-safe are also becoming thread-safe.
+
 Ref.
 
 o Andrew Troelsen and Philip Japikse - C\# 6.0 and the .NET 4.6 Framework
