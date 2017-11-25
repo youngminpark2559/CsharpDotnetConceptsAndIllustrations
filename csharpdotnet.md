@@ -96,9 +96,9 @@ LockKeywordForPublicMemberOfTheClass![](/assets/LockKeywordForPublicMemberOfTheC
 
 Using lock keyword is converted to the Monitor using after compiled.
 
-2.Interlock 
+2.Interlock.
 
-
+3.\[Synchronization\] attribute.
 
 Ref.
 
