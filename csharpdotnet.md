@@ -104,6 +104,16 @@ This way can be simple but lazy.
 
 The downfall of this way is that this way makes code rigid because all other codes which doesn't need to be thread-safe are also becoming thread-safe.
 
+4.ThreadPool.
+
+You can pass the method as a argument into WaitCallBack delegate, which you want to execute on secondary threads. 
+
+Then delegate object containing above methods can be queued into thread pool via QueueUserWorkItem\(\) method.
+
+And on the secondary threads against primary thread, you can invoke method which you want to invoke.
+
+ThreadPool has pros and cons.
+
 Ref.
 
 o Andrew Troelsen and Philip Japikse - C\# 6.0 and the .NET 4.6 Framework
