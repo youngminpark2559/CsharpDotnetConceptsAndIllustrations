@@ -90,7 +90,17 @@ o Andrew Troelsen and Philip Japikse - C\# 6.0 and the .NET 4.6 Framework
 
 =============================================================================================
 
-LockKeywordForPublicMemberOfTheClass![](/assets/LockKeywordForPublicMemberOfTheClass.png)Ref.
+LockKeywordForPublicMemberOfTheClass![](/assets/LockKeywordForPublicMemberOfTheClass.png)More techniques:
+
+1.Monitor: This is nothing but a shorthand using for lock keyword.
+
+Using lock keyword is converted to the Monitor using after compiled.
+
+2.Interlock 
+
+
+
+Ref.
 
 o Andrew Troelsen and Philip Japikse - C\# 6.0 and the .NET 4.6 Framework
 
