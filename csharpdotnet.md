@@ -106,7 +106,7 @@ The downfall of this way is that this way makes code rigid because all other cod
 
 4.ThreadPool.
 
-You can pass the method as a argument into WaitCallBack delegate, which you want to execute on secondary threads. 
+You can pass the method as a argument into WaitCallBack delegate, which you want to execute on secondary threads.
 
 Then delegate object containing above methods can be queued into thread pool via QueueUserWorkItem\(\) method.
 
@@ -117,4 +117,28 @@ ThreadPool has pros and cons.
 Ref.
 
 o Andrew Troelsen and Philip Japikse - C\# 6.0 and the .NET 4.6 Framework
+
+
+
+==========================================================================================
+
+Serialization![](/assets/Serialization.png)==========================================================================================
+
+ObjectGraph1![](/assets/ObjectGraph1.png)==========================================================================================
+
+ObjectGraph2![](/assets/ObjectGraph2.png)==========================================================================================
+
+IFormatterAndIRemotingFormatter
+
+![](/assets/IFormatterAndIRemotingFormatter.png)
+
+==========================================================================================
+
+BinaryAndXmlAndSoapDifferences![](/assets/BinaryAndXmlAndSoapDifferences.png)==========================================================================================
+
+BinaryDataRepresentation![](/assets/BinaryDataRepresentation.png)==========================================================================================
+
+XmlAttributes![](/assets/XmlAttributes.png)==========================================================================================
+
+CustomSerialize![](/assets/CustomSerialize.png)
 
