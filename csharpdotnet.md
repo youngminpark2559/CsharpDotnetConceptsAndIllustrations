@@ -118,8 +118,6 @@ Ref.
 
 o Andrew Troelsen and Philip Japikse - C\# 6.0 and the .NET 4.6 Framework
 
-
-
 ==========================================================================================
 
 Serialization![](/assets/Serialization.png)==========================================================================================
@@ -140,5 +138,13 @@ BinaryDataRepresentation![](/assets/BinaryDataRepresentation.png)===============
 
 XmlAttributes![](/assets/XmlAttributes.png)==========================================================================================
 
-CustomSerialize![](/assets/CustomSerialize.png)
+CustomSerialize![](/assets/CustomSerialize.png)==========================================================================================
+
+chapter13-1 and 13-2
+
+![](/assets/chapter13-1.png)
+
+13-2
+
+![](/assets/chapter13-2.png)
 
