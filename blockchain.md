@@ -42,3 +42,9 @@ A TxOut is composed of output\(s\). One output is composed of the value for an a
 
 \(6\)size indicates the entire size of the transaction.
 
+===========================================================================================
+
+![](/assets/BitcoinSecretIsSerializedToBase58Check.png)===========================================================================================
+
+
+
