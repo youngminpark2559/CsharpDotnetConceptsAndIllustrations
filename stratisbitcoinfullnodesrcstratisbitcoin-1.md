@@ -50,21 +50,13 @@ The constructor of this class gets 2 parameters\(Transaction type, State type\).
 
 =================================================================================
 
-
-
 **StratisBitcoinFullNode\src\Stratis.Bitcoin\BlockPulling\**
 
 StratisBitcoinFullNode\src\Stratis.Bitcoin\BlockPulling\BlockPuller.cs
 
-
-
-
-
-
-
 \* This abstract class BlockPuller is base class for pullers who download blocks from peers.
 
-
+---
 
 
 
@@ -72,7 +64,7 @@ StratisBitcoinFullNode\src\Stratis.Bitcoin\BlockPulling\BlockPuller.cs
 
 
 
-
+---
 
 
 
@@ -94,7 +86,7 @@ downloadedBlocks, assignedBlockTasks, pendingInventoryVectors, peersPendingDownl
 
 
 
-
+---
 
 
 
@@ -104,7 +96,7 @@ downloadedBlocks, assignedBlockTasks, pendingInventoryVectors, peersPendingDownl
 
 
 
-
+---
 
 
 
@@ -154,6 +146,8 @@ Note that it is possible for a peer to be operating well, but slowly, which can 
 
 
 
+---
+
 
 
 \* "peersPendingDownloads" is an inverse mapping to "assignedBlockTasks". Each connected peer node which has its list of assigned tasks here and there, is an equivalence between tasks in both structures.
@@ -168,7 +162,7 @@ Note that it is possible for a peer to be operating well, but slowly, which can 
 
 
 
-
+---
 
 
 
@@ -182,7 +176,7 @@ Note that it is possible for a peer to be operating well, but slowly, which can 
 
 
 
-
+---
 
 
 
@@ -194,7 +188,7 @@ private const int QualityScoreHistoryLength = 100;
 
 
 
-
+---
 
 
 
@@ -206,7 +200,7 @@ private readonly object lockObject = new object\(\);
 
 
 
-
+---
 
 
 
@@ -222,7 +216,7 @@ private readonly Dictionary&lt;uint256, BlockPullerBehavior&gt; assignedBlockTas
 
 
 
-
+---
 
 
 
@@ -240,7 +234,7 @@ private readonly Queue&lt;uint256&gt; pendingInventoryVectors;
 
 
 
-
+---
 
 
 
@@ -256,7 +250,7 @@ private readonly Dictionary&lt;uint256, DownloadedBlock&gt; downloadedBlocks;
 
 
 
-
+---
 
 
 
@@ -272,7 +266,7 @@ private readonly QualityScore peerQuality;
 
 
 
-
+---
 
 
 
@@ -302,7 +296,7 @@ public int DownloadedBlocksCount
 
 
 
-
+---
 
 
 
@@ -320,7 +314,7 @@ private readonly Dictionary&lt;BlockPullerBehavior, Dictionary&lt;uint256, Downl
 
 		
 
-		
+---
 
 
 
@@ -336,6 +330,8 @@ protected readonly IReadOnlyNetworkPeerCollection Nodes;
 
 
 
+---
+
 
 
 This ConcurrentChain type field represents the best chain which the node is aware of.
@@ -346,7 +342,7 @@ protected readonly ConcurrentChain Chain;
 
 
 
-
+---
 
 
 
@@ -360,7 +356,7 @@ private readonly NetworkPeerRequirement requirements;
 
 
 
-
+---
 
 
 
@@ -390,7 +386,7 @@ protected BlockPuller\(ConcurrentChain chain, IReadOnlyNetworkPeerCollection nod
 
 
 
-
+---
 
 
 
@@ -428,7 +424,7 @@ public virtual void BlockPushed\(uint256 blockHash, DownloadedBlock downloadedBl
 
 
 
-
+---
 
 
 
@@ -448,7 +444,7 @@ public void InjectBlock\(uint256 blockHash, DownloadedBlock downloadedBlock, Can
 
 
 
-
+---
 
 
 
@@ -466,7 +462,7 @@ public virtual void AskBlocks\(ChainedBlock\[\] downloadRequests\){ }
 
 
 
-
+---
 
 
 
@@ -490,7 +486,7 @@ private BlockPullerBehavior\[\] GetNodeBehaviors\(\){ }
 
 
 
-
+---
 
 
 
@@ -512,7 +508,7 @@ private void AssignPendingVectors\(\){ }
 
 
 
-
+---
 
 
 
@@ -528,7 +524,7 @@ public void CheckBlockStatus\(uint256 hash, out bool IsDownloading, out bool IsR
 
 
 
-
+---
 
 
 
@@ -556,7 +552,7 @@ protected void OnStalling\(ChainedBlock chainedBlock\){ }
 
 
 
-
+---
 
 
 
@@ -598,7 +594,7 @@ Nodes are only asked for blocks that they should have \(according to our informa
 
 
 
-
+---
 
 
 
@@ -625,16 +621,6 @@ false: otherwise, which indicates that there was no pending task, or that the pe
 
 
 internal bool AssignPendingDownloadTaskToPeer\(BlockPullerBehavior peer, out uint256 blockHash\){ }
-
-
-
-
-
-
-
-
-
-
 
 
 
