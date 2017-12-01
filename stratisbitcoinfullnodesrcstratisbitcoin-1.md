@@ -306,19 +306,9 @@ false: otherwise, which indicates that there was no pending task, or that the pe
 
 internal bool AssignPendingDownloadTaskToPeer\(BlockPullerBehavior peer, out uint256 blockHash\){ }
 
-
-
 ---
 
-
-
-
-
-
-
 This AssignDownloadTaskToPeer\(\) assigns a download task to a specific peer.
-
-
 
 "peer" represents Peer to be assigned the new task.
 
@@ -326,101 +316,47 @@ This AssignDownloadTaskToPeer\(\) assigns a download task to a specific peer.
 
 "peerDisconnected" represents if the function fails, this is set to true if the peer was marked as disconnected and thus unable to be assigned any more work.
 
-
-
 true: if the block was assigned to the peer.
 
 false: in case the block has already been assigned to someone, or if the peer is disconnected and should not be assigned any more work.
 
-
-
-
-
-
-
 internal bool AssignDownloadTaskToPeer\(BlockPullerBehavior peer, uint256 blockHash, out bool peerDisconnected\){ }
-
-
-
-
 
 ---
 
-
-
-
-
-
-
-
-
-
-
 This ReleaseDownloadTaskAssignmentLocked\(\) releases the block downloading task from the peer which it has been assigned to and returns the block to the list of blocks which the node wants to download.
-
-
 
 "peerPendingDownloads" represents List of pending downloads tasks of the peer.
 
 "blockHash" represents Hash of the block which task should be released.
 
-true: if the function succeeds. 
+true: if the function succeeds.
 
 false: if the block was not assigned to be downloaded by any peer.
 
 The caller of this method is responsible for holding "lockObject".
 
-
-
 private bool ReleaseDownloadTaskAssignmentLocked\(Dictionary&lt;uint256, DownloadAssignment&gt; peerPendingDownloads, uint256 blockHash\){ }
-
-
-
-
-
-
 
 ---
 
-
-
-
-
 This ReleaseAllPeerDownloadTaskAssignments\(\) releases all pending block download tasks assigned to a peer.
-
-
 
 "peer" represents Peer to have all its pending download task released.
 
 "disconnectPeer" represents if set to true, the peer is considered as disconnected and should be prevented from being assigned additional work.
 
-
-
 "InvalidOperationException" is thrown in case of data inconsistency between synchronized structures, which should never happen.
-
-
 
 internal void ReleaseAllPeerDownloadTaskAssignments\(BlockPullerBehavior peer, bool disconnectPeer\){ }
 
-
-
-
-
 ---
 
-
-
-
-
 When a peer downloads a block, it notifies the puller about the block by calling this DownloadTaskFinished\(\).
-
-
 
 The downloaded task is removed from the list of pending downloads and the downloaded task is also removed from the "assignedBlockTasks" so that the task is no longer assigned to the peer.
 
 And finally, it is added to the list of downloaded blocks, provided that the block is not present there already.
-
-
 
 "peer" represents Peer that finished the download task.
 
@@ -428,23 +364,157 @@ And finally, it is added to the list of downloaded blocks, provided that the blo
 
 "downloadedBlock" represents Description of the downloaded block.
 
-
-
 true: if the download task for the block was assigned to "peer" and the task was removed and added to the list of downloaded blocks.
 
 false: if the downloaded block has been assigned to another peer
 
 or if the block was already on the list of downloaded blocks.
 
-
-
 internal bool DownloadTaskFinished\(BlockPullerBehavior peer, uint256 blockHash, DownloadedBlock downloadedBlock\){ }
-
-			
-
-			
 
 ---
 
 
+
+This GetDownloadedBlock\(\) retrieves a downloaded block from list of downloaded blocks, but does not remove the block from the list.
+
+
+
+"blockHash" represents Hash of the block to obtain.
+
+Downloaded block or null if block with the given hash is not on the list.
+
+        
+
+protected DownloadedBlock GetDownloadedBlock\(uint256 blockHash\){ }
+
+
+
+
+
+---
+
+
+
+
+
+
+
+This AddDownloadedBlock\(\) adds a downloaded block to the list of downloaded blocks.
+
+
+
+If a block with the same hash already existed in the list, it is not replaced with the new one, but the function does not fail.
+
+
+
+
+
+"blockHash" represents Hash of the block to add.
+
+"downloadedBlock" represents Downloaded block to add.
+
+true: if the block was added to the list of downloaded blocks.
+
+false: if the block was already present.
+
+
+
+private bool AddDownloadedBlock\(uint256 blockHash, DownloadedBlock downloadedBlock\){ }
+
+
+
+---
+
+
+
+
+
+This TryRemoveDownloadedBlock\(\) gets and removes a downloaded block from the list of downloaded blocks.
+
+
+
+"blockHash" represents Hash of the block to retrieve.
+
+"downloadedBlock" represents if the function succeeds, this is filled with the downloaded block, which hash is "blockHash".
+
+true: if the function succeeds. 
+
+false: if the block with the given hash was not in the list.
+
+
+
+protected bool TryRemoveDownloadedBlock\(uint256 blockHash, out DownloadedBlock downloadedBlock\){ }
+
+
+
+---
+
+
+
+
+
+This GetPendingDownloadsCount\(\) obtains the number of tasks assigned to a peer.
+
+
+
+"peer" represents Peer to get number of assigned tasks for.
+
+Number of tasks assigned to "peer".
+
+
+
+internal int GetPendingDownloadsCount\(BlockPullerBehavior peer\){ }
+
+
+
+
+
+---
+
+
+
+
+
+This AddPeerPendingDownloadLocked\(\) adds download task to the peer's list of pending download tasks.
+
+
+
+"peer" represents Peer to add task to.
+
+"blockHash" represents Hash of the block being assigned to "peer" for download.
+
+The caller of this method is responsible for holding "lockObject".
+
+
+
+private void AddPeerPendingDownloadLocked\(BlockPullerBehavior peer, uint256 blockHash\){ }
+
+
+
+
+
+---
+
+
+
+
+
+This CheckBlockTaskAssignment\(\) checks if the puller behavior is currently responsible for downloading specific block.
+
+
+
+"peer" represents Peer's behavior to check the assignment for.
+
+"blockHash" represents Hash of the block.
+
+true: if the "peer" is currently responsible for downloading block with hash "blockHash".
+
+
+
+public bool CheckBlockTaskAssignment\(BlockPullerBehavior peer, uint256 blockHash\){ }
+
+
+
+---
 
