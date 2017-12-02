@@ -374,41 +374,19 @@ internal bool DownloadTaskFinished\(BlockPullerBehavior peer, uint256 blockHash,
 
 ---
 
-
-
 This GetDownloadedBlock\(\) retrieves a downloaded block from list of downloaded blocks, but does not remove the block from the list.
-
-
 
 "blockHash" represents Hash of the block to obtain.
 
 Downloaded block or null if block with the given hash is not on the list.
 
-        
-
 protected DownloadedBlock GetDownloadedBlock\(uint256 blockHash\){ }
-
-
-
-
 
 ---
 
-
-
-
-
-
-
 This AddDownloadedBlock\(\) adds a downloaded block to the list of downloaded blocks.
 
-
-
 If a block with the same hash already existed in the list, it is not replaced with the new one, but the function does not fail.
-
-
-
-
 
 "blockHash" represents Hash of the block to add.
 
@@ -418,67 +396,35 @@ true: if the block was added to the list of downloaded blocks.
 
 false: if the block was already present.
 
-
-
 private bool AddDownloadedBlock\(uint256 blockHash, DownloadedBlock downloadedBlock\){ }
-
-
 
 ---
 
-
-
-
-
 This TryRemoveDownloadedBlock\(\) gets and removes a downloaded block from the list of downloaded blocks.
-
-
 
 "blockHash" represents Hash of the block to retrieve.
 
 "downloadedBlock" represents if the function succeeds, this is filled with the downloaded block, which hash is "blockHash".
 
-true: if the function succeeds. 
+true: if the function succeeds.
 
 false: if the block with the given hash was not in the list.
 
-
-
 protected bool TryRemoveDownloadedBlock\(uint256 blockHash, out DownloadedBlock downloadedBlock\){ }
-
-
 
 ---
 
-
-
-
-
 This GetPendingDownloadsCount\(\) obtains the number of tasks assigned to a peer.
-
-
 
 "peer" represents Peer to get number of assigned tasks for.
 
 Number of tasks assigned to "peer".
 
-
-
 internal int GetPendingDownloadsCount\(BlockPullerBehavior peer\){ }
-
-
-
-
 
 ---
 
-
-
-
-
 This AddPeerPendingDownloadLocked\(\) adds download task to the peer's list of pending download tasks.
-
-
 
 "peer" represents Peer to add task to.
 
@@ -486,23 +432,11 @@ This AddPeerPendingDownloadLocked\(\) adds download task to the peer's list of p
 
 The caller of this method is responsible for holding "lockObject".
 
-
-
 private void AddPeerPendingDownloadLocked\(BlockPullerBehavior peer, uint256 blockHash\){ }
-
-
-
-
 
 ---
 
-
-
-
-
 This CheckBlockTaskAssignment\(\) checks if the puller behavior is currently responsible for downloading specific block.
-
-
 
 "peer" represents Peer's behavior to check the assignment for.
 
@@ -510,11 +444,1133 @@ This CheckBlockTaskAssignment\(\) checks if the puller behavior is currently res
 
 true: if the "peer" is currently responsible for downloading block with hash "blockHash".
 
-
-
 public bool CheckBlockTaskAssignment\(BlockPullerBehavior peer, uint256 blockHash\){ }
+
+---
+
+
+
+
+
+\*\*StratisBitcoinFullNode\src\Stratis.Bitcoin\BlockPulling\BlockPullerBehavior.cs\*\*
+
+
+
+
+
+This IBlockPullerBehavior is for relation of the node's puller to a network peer node.
+
+
+
+public interface IBlockPullerBehavior{ }
+
+
+
+
+
+
 
 
 
 ---
+
+
+
+
+
+
+
+public class BlockPullerBehavior : NetworkPeerBehavior, IBlockPullerBehavior{ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+
+
+This BlockPuller type filed is for Reference to the parent block puller.
+
+private readonly BlockPuller puller;
+
+
+
+
+
+---
+
+
+
+
+
+This ChainHeadersBehavior type get set property is for Reference to a component responsible for keeping the chain up to date.
+
+
+
+public ChainHeadersBehavior ChainHeadersBehavior { get; private set; }
+
+
+
+
+
+---
+
+
+
+This Disconnected get set property is Set to true: when the puller behavior is disconnected, so that the associated network peer can get no more download tasks.
+
+All access to this object has to be protected by "BlockPuller.lockObject".
+
+
+
+internal bool Disconnected { get; set; }
+
+
+
+
+
+
+
+---
+
+
+
+
+
+This PendingDownloadsCount get property returns the Number of download tasks assigned to this peer. This is for logging purposes only.
+
+public int PendingDownloadsCount { get; }
+
+		
+
+---
+
+
+
+
+
+This object type field is for Lock protecting write access to"QualityScore".
+
+private readonly object qualityScoreLock = new object\(\);
+
+
+
+
+
+---
+
+
+
+This double type QualityScore get set property is for Write access to this object which has to be protected by "qualityScoreLock".
+
+public double QualityScore { get; private set; }
+
+
+
+
+
+---
+
+
+
+
+
+
+
+
+
+This constructor BlockPullerBehavior Initializes a new instance of the object with parent block puller.
+
+
+
+"puller" represents Reference to the parent block puller.
+
+"loggerFactory" represents Factory to be used to create logger for the puller.
+
+
+
+public BlockPullerBehavior\(BlockPuller puller, ILoggerFactory loggerFactory\){ }
+
+
+
+
+
+---
+
+
+
+
+
+This Node\_MessageReceived\(\) is Event handler that is called when the attached node receives a network message.
+
+
+
+This handler modifies internal state when an information about a block is received.
+
+
+
+
+
+"node" represents Node that received the message.
+
+"message" represents Received message.
+
+
+
+private void Node\_MessageReceived\(NetworkPeer node, IncomingMessage message\){ }
+
+
+
+
+
+---
+
+
+
+
+
+
+
+If there are any more blocks which the node wants to download, this method assigns and starts
+
+a new download task for a specific peer node that this behavior represents.
+
+
+
+internal void AssignPendingVector\(\){ }
+
+
+
+
+
+
+
+---
+
+
+
+
+
+
+
+This StartDownload\(\) Sends a message to the connected peer requesting specific data.
+
+
+
+"getDataPayload" represents Specification of the data to download - "GetDataPayload".
+
+Caller is responsible to add the puller to the map if necessary.
+
+
+
+internal void StartDownload\(GetDataPayload getDataPayload\){ }		
+
+		
+
+		
+
+---
+
+
+
+
+
+This AttachCore\(\) Connects the puller to the node and the chain so that the puller can start its work.
+
+
+
+protected override void AttachCore\(\){ }
+
+
+
+
+
+---
+
+
+
+
+
+
+
+This DetachCore\(\) Disconnects the puller from the node and cancels pending operations and download tasks.
+
+
+
+protected override void DetachCore\(\){ }
+
+
+
+
+
+
+
+---
+
+
+
+
+
+This ReleaseAll\(\) Releases all pending block download tasks from the peer.
+
+        
+
+"peerDisconnected" represents If set to true, the peer is considered as disconnected and should be prevented from being assigned additional work.
+
+
+
+internal void ReleaseAll\(bool peerDisconnected\){ }
+
+
+
+
+
+---
+
+
+
+
+
+This UpdateQualityScore\(\) Adjusts the quality score of the peer.
+
+
+
+"scoreAdjustment" represents Adjustment to make to the quality score of the peer.
+
+internal void UpdateQualityScore\(double scoreAdjustment\){ }
+
+
+
+
+
+---
+
+
+
+
+
+===
+
+
+
+\*\*StratisBitcoinFullNode\src\Stratis.Bitcoin\BlockPulling\DownloadAssignment.cs\*\*
+
+
+
+===
+
+
+
+
+
+This DownloadAssignment class Describes the assigned download tasks.
+
+
+
+public class DownloadAssignment{ }
+
+		
+
+		
+
+		
+
+		
+
+---
+
+
+
+
+
+This constructor DownloadAssignment\(\) Initializes a new instance of the object and possibly starts the internal watch.
+
+
+
+"blockHash"&gt; represents Hash of the block being downloaded.
+
+"start" represents If true, the download task's stopwatch will be started immediately.
+
+
+
+public DownloadAssignment\(uint256 blockHash, bool start = true\){ }
+
+
+
+
+
+---
+
+
+
+
+
+This Finish\(\) Stops the task's stopwatch and returns elapsed time.
+
+        
+
+This Finish\(\) returns Number of milliseconds since the task started.
+
+
+
+public long Finish\(\){ }
+
+
+
+
+
+---
+
+
+
+
+
+\*\*StratisBitcoinFullNode\src\Stratis.Bitcoin\BlockPulling\LookaheadBlockPuller.cs\*\*
+
+
+
+
+
+---
+
+
+
+
+
+This ILookaheadBlockPuller is for Block puller used for fast sync during initial block download \(IBD\).
+
+
+
+public interface ILookaheadBlockPuller{ }
+
+
+
+
+
+---
+
+
+
+
+
+This TryGetLookahead\(\) Tries to retrieve a block that is in front of the current puller's position by a specific height.
+
+
+
+"count" represents How many blocks ahead \(minus one\) should the returned block be ahead of the current puller's position.
+
+A value of zero will provide the next block, a value of one will provide a block that is 2 blocks ahead.
+
+
+
+This TryGetLookahead\(\) returns The block which height is "count"+1 higher than current puller's position, or null if such a block is not downloaded or does not exist.
+
+
+
+Block TryGetLookahead\(int count\);
+
+
+
+
+
+
+
+---
+
+
+
+
+
+This Location get property Gets the current location of the puller to a specific block header.
+
+
+
+ChainedBlock Location { get; }
+
+
+
+---
+
+
+
+This SetLocation\(\) Sets the current location of the puller to a specific block header.
+
+"location" represents Block header to set the location to.
+
+
+
+void SetLocation\(ChainedBlock location\);
+
+		
+
+		
+
+		
+
+---
+
+
+
+
+
+This NextBlock\(\) Waits for a next block to be available \(downloaded\) and returns it to the consumer.
+
+
+
+"cancellationToken" represents Cancellation token to allow the caller to cancel waiting for the next block.
+
+
+
+This NextBlock\(\) returns Next block or null if a reorganization happened on the chain.
+
+
+
+LookaheadResult NextBlock\(CancellationToken cancellationToken\);
+
+
+
+---
+
+
+
+
+
+This RequestOptions\(\) Adds a specific requirement to all peer nodes.
+
+        
+
+"transactionOptions" Specifies the requirement on nodes to add.
+
+
+
+void RequestOptions\(TransactionOptions transactionOptions\);
+
+
+
+
+
+---
+
+
+
+
+
+A result from the "ILookaheadBlockPuller" containing the downloaded block and the "IPEndPoint" of the peer that it came from.
+
+
+
+Block will be null if the current chain was reorganized.
+
+
+
+public class LookaheadResult{ }
+
+
+
+
+
+---
+
+
+
+
+
+
+
+This Block type get set property is for The downloaded "Block" that was requested by the puller.
+
+        
+
+public Block Block { get; set; }
+
+
+
+
+
+---
+
+
+
+This IPEndPoint type get set property is for The peer which this block came from.
+
+        
+
+public IPEndPoint Peer { get; set; }
+
+
+
+
+
+---
+
+
+
+
+
+A puller that is used for fast sync during initial block download \(IBD\). That puller implements a strategy of downloading multiple blocks from multiple peers at once, so that IBD is fast enough, but does not consume too many resources.
+
+
+
+ 
+
+The node is aware of the longest chain of block headers, which is stored in this.Chain. This is the chain the puller needs to download. The algorithm works with following values: ActualLookahead, MinimumLookahead, MaximumLookahead, location, and lookaheadLocation.
+
+
+
+
+
+ActualLookahead is a number of blocks that we wish to download at the same time, it varies between MinimumLookahead and MaximumLookahead depending on the consumer's speed and node download speed. Calling AskBlocks\(\) increases lookaheadLocation by ActualLookahead. Here is a visualization of the block chain and how the puller sees it:
+
+ 
+
+
+
+-------A------B-------------C-----------D---------E--------
+
+ 
+
+
+
+Each '-' represents a block and letters 'A' to 'E' represent blocks with important positions in the chain from the puller's perspective. The puller can be understood as a producer of the blocks \(by requesting them from the peers and downloading them\) for the component that uses the puller that consumes the blocks \(e.g. validating them\).
+
+ 
+
+
+
+A is a position of a block that we call location. Blocks in front of A were already downloaded and consumed.
+
+ 
+
+
+
+ 
+
+B is a position of a block A + MinimumLookahead, and E is a position of block A + MaximumLookahead.
+
+Blocks between B and E are the blocks that the puller is currently interested in. Blocks after E are currently not considered and will only be interesting later. The lower boundary B prevents the IBD to be too slow, while the upper boundary E prevents the puller from using too many resources.
+
+ 
+
+
+
+Blocks between A and B are blocks that have been downloaded already, but the consumer did not consume them yet.
+
+ 
+
+
+
+C is a position of a block A + lookaheadLocation. Blocks between B and C are currently being requested by the puller, some of them could be already being downloaded. The block puller makes sure that if lookaheadLocation &lt; ActualLookahead then AskBlocks\(\) is called. During the initialization, or when reorganisation happens, lookaheadLocation is zero/null and AskBlocks\(\) needs to be called two times.
+
+ 
+
+
+
+D is a position of a block A + ActualLookahead. ActualLookahead is a number of blocks that the puller wants to be downloading simultaneously. If there is a gap between C and D it means that the puller wants to start
+
+downloading these blocks.
+
+ 
+
+
+
+Blocks between D and E are currently those that the puller does not want to be downloading right now, but should the ActualLookahead be adjusted, they can be requested in the near future.
+
+ 
+
+ 
+
+public class LookaheadBlockPuller : BlockPuller, ILookaheadBlockPuller{ }
+
+
+
+
+
+---
+
+
+
+
+
+This int type constant field is for Maximal size of a block in bytes.
+
+
+
+private const int MaxBlockSize = 2000000;
+
+
+
+
+
+---
+
+
+
+
+
+This int type constant is for Number of milliseconds for a single waiting round for the next block in the "NextBlockCore" loop.
+
+private const int WaitNextBlockRoundTimeMs = 100;
+
+
+
+
+
+---
+
+
+
+This int type get set property is for Lower limit for ActualLookahead.
+
+
+
+public int MinimumLookahead { get; set; }
+
+
+
+---
+
+
+
+This int type get set property is for Upper limit for ActualLookahead.
+
+
+
+public int MaximumLookahead { get; set; }
+
+
+
+		
+
+		
+
+---
+
+
+
+This int type field is for Number of blocks the puller wants to be downloading at once.
+
+
+
+private int actualLookahead;
+
+
+
+
+
+---
+
+
+
+This int type get set property is for Number of blocks the puller wants to be downloading at once.
+
+
+
+public int ActualLookahead { get; set; }
+
+
+
+
+
+---
+
+
+
+
+
+This int type get set property is for Maximum number of bytes used by unconsumed blocks that the puller is willing to maintain.
+
+
+
+public int MaxBufferedSize { get; set; }
+
+		
+
+		
+
+---
+
+
+
+
+
+This object type field is Lock object to protect access to "currentBufferedSize" ,"currentBufferedCount", and "askBlockQueue".
+
+
+
+private readonly object bufferLock = new object\(\);
+
+
+
+
+
+---
+
+
+
+This Queue&lt;ChainedBlock&gt; type field represents Queue of download requests that couldn't be asked for due to "MaxBufferedSize" limit.
+
+
+
+All access to this object has to be protected by "bufferLock".
+
+
+
+private readonly Queue&lt;ChainedBlock&gt; askBlockQueue = new Queue&lt;ChainedBlock&gt;\(\);
+
+
+
+---
+
+
+
+
+
+
+
+This long type field represents Current number of bytes that unconsumed blocks are occupying.
+
+
+
+All access to this object has to be protected by "bufferLock". 
+
+
+
+private long currentBufferedSize;
+
+	
+
+
+
+---
+
+
+
+
+
+This int type field represents Current number which unconsumed blocks are occupying.
+
+
+
+All access to this object has to be protected by "bufferLock". 
+
+
+
+private int currentBufferedCount;
+
+
+
+
+
+---
+
+
+
+
+
+This object type field represents Lock object to protect access to "downloadedCounts".
+
+
+
+private readonly object downloadedCountsLock = new object\(\);
+
+
+
+
+
+---
+
+
+
+
+
+
+
+This List&lt;int&gt; type field Maintains the statistics of number of downloaded blocks. This is used for calculating new actualLookahead value.
+
+
+
+All access to this object has to be protected by "downloadedCountsLock".
+
+
+
+private List&lt;int&gt; downloadedCounts = new List&lt;int&gt;\(\);
+
+	
+
+	
+
+	
+
+---
+
+
+
+
+
+This object type field represents Lock object to protect access to "location".
+
+
+
+private readonly object locationLock = new object\(\);
+
+
+
+
+
+---
+
+
+
+
+
+
+
+This ChainedBlock type field represents Points to a block that was consumed last time. The next block returned by the puller to the consumer will be at location + 1.
+
+
+
+Write access to this object has to be protected by "locationLock". 
+
+
+
+private ChainedBlock location;
+
+
+
+
+
+---
+
+
+
+
+
+This ChainedBlock type field Identifies the last block that is currently being requested/downloaded.
+
+
+
+private ChainedBlock lookaheadLocation;
+
+	
+
+
+
+---
+
+
+
+
+
+This AutoResetEvent type field represents Event that signals when a downloaded block is consumed.
+
+
+
+private readonly AutoResetEvent consumed = new AutoResetEvent\(false\);
+
+
+
+---
+
+
+
+
+
+This AutoResetEvent type field represents Event that signals when a new block is pushed to the list of downloaded blocks.
+
+
+
+private readonly AutoResetEvent pushed = new AutoResetEvent\(false\);
+
+
+
+---
+
+
+
+
+
+This decimal type get set property represents Median of a list of past downloadedCounts values. This is used just for logging purposes.
+
+
+
+public decimal MedianDownloadCount { get; set; }
+
+		
+
+		
+
+---
+
+
+
+
+
+This constructor Initializes a new instance of the object having a chain of block headers and a connection manager.
+
+    
+
+"chain" represents Chain of block headers. 
+
+"connectionManager" represents Manager of information about the node's network connections. 
+
+"loggerFactory" represents Factory to be used to create logger for the puller. 
+
+	
+
+public LookaheadBlockPuller\(ConcurrentChain chain, IConnectionManager connectionManager, ILoggerFactory loggerFactory\)
+
+      : base\(chain, connectionManager.ConnectedNodes, connectionManager.NodeSettings.ProtocolVersion, loggerFactory\)
+
+{ }
+
+
+
+
+
+---
+
+
+
+
+
+This GetMedian\(\) Finds median for list of values.
+
+    
+
+"sourceNumbers" represents List of values to find median for. 
+
+
+
+This method returns Median of the input values.
+
+
+
+private static decimal GetMedian\(List&lt;int&gt; sourceNumbers\){ }
+
+
+
+
+
+---
+
+
+
+ 
+
+This method Calculates a new value for this.ActualLookahead to keep it within reasonable range.
+
+
+
+This ensures that the puller is requesting enough new blocks quickly enough to keep with the demand, but at the same time not too quickly.
+
+    
+
+private void CalculateLookahead\(\){ }
+
+
+
+
+
+---
+
+
+
+
+
+This method Prepares and invokes download tasks from peer nodes for blocks the node is missing.
+
+    
+
+TODO: Comment is missing here about the details of the logic in this method. 
+
+private void AskBlocks\(\){ }
+
+
+
+
+
+---
+
+
+
+This method Adds block download requests to the queue, that later will distribute them to peers.
+
+    
+
+"downloadRequests" represents Array of block descriptions that need to be downloaded. Must not be empty.
+
+
+
+Blocks in the array have to be unique - it is not supported for a single block to be included twice in this array.
+
+
+
+private void QueueRequests\(ChainedBlock\[\] downloadRequests\){ }
+
+
+
+
+
+---
+
+
+
+
+
+This method Asks for blocks if there is a free space or if the next block is waiting.
+
+    
+
+Note that this method relies on the fact that the puller requests are ordered. 
+
+
+
+private void ProcessQueue\(\){ }
+
+
+
+
+
+---
+
+
+
+
+
+This method Waits for a next block to be available \(downloaded\).
+
+    
+
+"cancellationToken" represents Cancellation token to allow the caller to cancel waiting for the next block.
+
+
+
+This method returns Next block or null if a reorganization happened on the chain.
+
+
+
+private LookaheadResult NextBlockCore\(CancellationToken cancellationToken\){ }
+
+
+
+
+
+---
+
+
+
+
+
+
 
