@@ -1116,49 +1116,21 @@ public bool IsPenaltyDiscarded\(\){ }
 
 ---
 
-
-
 ===
-
-
 
 StratisBitcoinFullNode\src\Stratis.Bitcoin\BlockPulling\StoreBlockPuller.cs
 
-
-
 ===
 
-
-
-
-
 ---
-
-
-
-
-
-
 
 This class is for Puller that download blocks from peers.
 
-    
-
 public class StoreBlockPuller : BlockPuller { }
-
-
-
-
 
 ---
 
-
-
-
-
 This constructor Initializes a new instance of the object having a chain of block headers and a list of available nodes.
-
-        
 
 "chain" represents Chain of block headers.
 
@@ -1166,59 +1138,33 @@ This constructor Initializes a new instance of the object having a chain of bloc
 
 "loggerFactory" represents Factory to be used to create logger for the puller.
 
-
-
 public StoreBlockPuller\(ConcurrentChain chain, Connection.IConnectionManager nodes, ILoggerFactory loggerFactory\)
 
-            : base\(chain, nodes.ConnectedNodes, nodes.NodeSettings.ProtocolVersion, loggerFactory\)
+```
+        : base\(chain, nodes.ConnectedNodes, nodes.NodeSettings.ProtocolVersion, loggerFactory\)
+```
 
 { }
 
-
-
 ---
-
-
-
-
 
 This method Prepares and invokes a download task for multiple blocks.
 
-        
-
 public void AskForMultipleBlocks\(ChainedBlock\[\] downloadRequests\) { }
-
-
-
-
 
 ---
 
-
-
 This method Tries to retrieve a specific downloaded block from the list of downloaded blocks.
-
-        
 
 "chainedBlock" represents Header of the block to retrieve.
 
 "block" represents If the function succeeds, the downloaded block is returned in this parameter.
 
-
-
 This method returns true if the function succeeds, false otherwise.
-
-
 
 public bool TryGetBlock\(ChainedBlock chainedBlock, out DownloadedBlock block\){ }
 
-
-
-
-
 ---
-
-
 
 
 
