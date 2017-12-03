@@ -896,437 +896,185 @@ private LookaheadResult NextBlockCore\(CancellationToken cancellationToken\){ }
 
 ---
 
-
-
 ---
 
-
-
-
-
 ===
-
-
 
 \*\*StratisBitcoinFullNode\src\Stratis.Bitcoin\BlockPulling\PullerDownloadAssignments.cs\*\*
 
-
-
 ===
-
-
-
-
-
-
 
 This class Implements a strategy for a block puller that needs to download a set of blocks from its connected peers.
 
-    
-
 public static class PullerDownloadAssignments{ }
 
-
-
-
-
 ---
-
-
-
-
 
 This nested class is for Information about a connected peer.
 
 public class PeerInformation{ }
 
-
-
-
-
 ---
-
-
-
-
 
 This double type get set property is for Evaluation of the node's past experience with the peer.
 
-
-
 public double QualityScore { get; set; }
 
-			
-
-			
-
 ---
-
-
-
-
 
 This int type get set property is for Length of the chain which the peer maintains.
 
-
-
 public int ChainHeight { get; set; }
 
-
-
-
-
 ---
-
-
-
-
 
 This object type get set property represents Application defined peer identifier.
 
-
-
 public object PeerId { get; set; }
 
-
-
 ---
-
-
-
-
 
 This int type get set property represents Number of tasks assigned to this peer.
 
-
-
 public int TasksAssignedCount { get; set; }
 
-
-
 ---
-
-
-
-
 
 This int type const field is for Number of blocks from the currently last block that are protected from being assigned to poor peers.
 
-
-
 "AssignBlocksToPeers"
-
-
 
 private const int CriticalLookahead = 10;
 
-
-
-
-
 ---
-
-
 
 This int type constant field represents that Peer is considered to be assigned a large amount of work if it has more than this amount of download tasks assigned.
 
-
-
 private const int HighWorkAmountThreshold = 50;
-
-		
-
-		
 
 ---
 
-
-
-
-
 Having a list of block heights of the blocks that needs to be downloaded and having a list of available peer nodes that can be asked to provide the blocks, this method selects which peer is asked to provide which block.
-
-
 
 Past experience with the node is considered when assigning the task to a peer.
 
 Peers with better quality score tend to get more works than others.
 
-        
-
-        
-
 "requestedBlockHeights" represents List of block heights that needs to be downloaded.
 
 "availablePeersInformation" represents List of peers that are available including information about lengths of their chains.
 
-
-
 This method returns List of block heights that each peer is assigned, mapped by information about peers.
-
-
-
-
 
 Peers with a lot of work \(more than "HighWorkAmountThreshold"\) which is already assigned to them have less chance of getting more work. However, the quality is stronger factor.
 
-
-
 Tasks to download blocks with height in the lower half of the requested block heights are protected from being assigned to peers with quality below the median quality of available peers.
-
-
-
-
 
 public static Dictionary&lt;PeerInformation, List&lt;int&gt;&gt; AssignBlocksToPeers\(List&lt;int&gt; requestedBlockHeights, List&lt;PeerInformation&gt; availablePeersInformation\){ }
 
-			
-
-			
-
 ---
 
-
-
-
-
-
-
 This method Chooses random index proportional to the score.
-
-        
 
 "scores" represents Array of scores.
 
 "totalScore" represents Sum of the values in "scores".
 
- 
-
 This method returns Random index to "scores" array - i.e. a number from 0 to scores.Length - 1.
-
-
 
 private static int GetNodeIndex\(int\[\] scores, int totalScore\){ }
 
-
-
 ---
-
-
-
-
 
 \*\*StratisBitcoinFullNode\src\Stratis.Bitcoin\BlockPulling\QualityScore.cs\*\*
 
-
-
 ---
-
-
 
 This struct type is for Single historic sample item for quality score calculations.
 
-    
-
 public struct PeerSample{ }
 
-
-
 ---
-
-
-
-
 
 This IBlockPullerBehavior type get set property represents Peer who provided the sample.
 
-
-
 public IBlockPullerBehavior peer { get; set; }
 
-
-
 ---
-
-
 
 This double type get set property represents Downloading speed as number of milliseconds per KB.
 
-
-
 public double timePerKb { get; set; }
 
-		
-
-		
-
-		
-
 ---
-
-
-
-
 
 This class Implements logic of evaluation of quality of node network peers based on the recent past experience with them with respect to other node's network peers.
 
-    
-
-
-
 Each peer is assigned with a quality score, which is a floating point number between "MinScore" and "MaxScore" inclusive. Each peer starts with the score in the middle of the score interval. The higher the score, the better the peer and the better chance for the peer to get more work assigned.
-
-    
 
 public class QualityScore{ }
 
-
-
-
-
 ---
-
-
-
-
 
 This double type constant represents Minimal quality score of a peer node based on the node's past experience with the peer node.
 
 public const double MinScore = 1.0;
 
-
-
-
-
 ---
-
-
 
 This doulbe type constatat represents Maximal quality score of a peer node based on the node's past experience with the peer node.
 
 public const double MaxScore = 150.0;
 
-
-
-
-
 ---
-
-
-
-
-
-
 
 This double type get set property represents Average time of a block download among the samples kept in "samples" array.
 
-        
-
 Write access to this object has to be protected by "lockObject".
-
-        
 
 Public getter allows better testing of the class.
 
-        
-
-        
-
 public double AverageBlockTimePerKb { get; private set; }
 
-
-
-
-
 ---
-
-
-
-
 
 This CircularArray&lt;PeerSample&gt; type field represents Circular array of recent block times in milliseconds per KB.
 
-        
-
 All access to this object has to be protected by "lockObject".
-
-
 
 private readonly CircularArray&lt;PeerSample&gt; samples;
 
-
-
-		
-
 ---
-
-
 
 This Dictionary&lt;IBlockPullerBehavior, int&gt; type field represents Reference counter for peers. This is used for calculating how many peers contributed to the sample which history we keep.
 
-
-
 All access to this object has to be protected by "lockObject".
-
-
 
 private readonly Dictionary&lt;IBlockPullerBehavior, int&gt; peerReferenceCounter;
 
-
-
-
-
 ---
-
-
 
 This double type get set property represents Sum of all samples in "samples" array.
 
-        
-
 All access to this object has to be protected by "lockObject".
-
-
 
 private double samplesSum { get; set; }
 
-
-
 ---
 
-
-
-
-
-
-
 This constructor Initializes a new instance of the object.
-
-
 
 "maxSampleCount" represents Maximal number of samples we calculate statistics from.
 
 "loggerFactory" represents Factory to be used to create logger for the puller.
 
-
-
 public QualityScore\(int maxSampleCount, ILoggerFactory loggerFactory\){ }
 
-			
-
-			
-
-			
-
 ---
-
-
 
 &lt;summary&gt;
 
 This method Adds new time of a block to the list of times of recently downloaded blocks.
-
-        
 
 "peer" represents Peer that downloaded the block.
 
@@ -1334,89 +1082,141 @@ This method Adds new time of a block to the list of times of recently downloaded
 
 "blockSize" represents Size of the downloaded block in bytes.
 
-
-
 public void AddSample\(IBlockPullerBehavior peer, long blockDownloadTimeMs, int blockSize\){ }
-
-
-
-
 
 ---
 
-
-
-
-
 This method Calculates adjustment of peer's quality score when it finished downloading a block.
-
-        
 
 "blockDownloadTimeMs" represents Time in milliseconds it took to download the block from the peer.
 
 "blockSize" represents Size of the downloaded block in bytes.
 
-
-
 This method returns Quality score adjustment for the peer.
-
-
 
 public double CalculateQualityAdjustment\(long blockDownloadTimeMs, int blockSize\){ }
 
-
-
-
-
 ---
-
-
-
-
-
-
 
 This method Calculates peer's penalty when the wait for the next block times out.
 
-        
-
 This method returns Quality score penalty for the peer.
-
-
 
 public double CalculateNextBlockTimeoutQualityPenalty\(\){ }
 
-
-
-
-
 ---
-
-
-
-
-
-
 
 This method Checks whether penalty should be avoided. This is when sum\(score\) of all peers is lower than 2x number of peers peerCount.
 
-
-
 This mechanism also prevents single peer to go to minimum if it is alone.
-
-        
 
 This method returns true if the penalty should be discarded, false otherwise.
 
-
-
 public bool IsPenaltyDiscarded\(\){ }
+
+---
+
+
+
+===
+
+
+
+StratisBitcoinFullNode\src\Stratis.Bitcoin\BlockPulling\StoreBlockPuller.cs
+
+
+
+===
+
+
 
 
 
 ---
 
 
+
+
+
+
+
+This class is for Puller that download blocks from peers.
+
+    
+
+public class StoreBlockPuller : BlockPuller { }
+
+
+
+
+
+---
+
+
+
+
+
+This constructor Initializes a new instance of the object having a chain of block headers and a list of available nodes.
+
+        
+
+"chain" represents Chain of block headers.
+
+"nodes" represents Network peers of the node.
+
+"loggerFactory" represents Factory to be used to create logger for the puller.
+
+
+
+public StoreBlockPuller\(ConcurrentChain chain, Connection.IConnectionManager nodes, ILoggerFactory loggerFactory\)
+
+            : base\(chain, nodes.ConnectedNodes, nodes.NodeSettings.ProtocolVersion, loggerFactory\)
+
+{ }
+
+
+
+---
+
+
+
+
+
+This method Prepares and invokes a download task for multiple blocks.
+
+        
+
+public void AskForMultipleBlocks\(ChainedBlock\[\] downloadRequests\) { }
+
+
+
+
+
+---
+
+
+
+This method Tries to retrieve a specific downloaded block from the list of downloaded blocks.
+
+        
+
+"chainedBlock" represents Header of the block to retrieve.
+
+"block" represents If the function succeeds, the downloaded block is returned in this parameter.
+
+
+
+This method returns true if the function succeeds, false otherwise.
+
+
+
+public bool TryGetBlock\(ChainedBlock chainedBlock, out DownloadedBlock block\){ }
+
+
+
+
+
+---
 
 
 
