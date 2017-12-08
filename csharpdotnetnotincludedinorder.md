@@ -2,6 +2,8 @@
 
 ![](/assets/11.png)![](/assets/22.png)![](/assets/33.png)====================================================================================
 
+https://stackoverflow.com/questions/47492801/c-sharp-async-and-await-feature-and-threads
+
 ![](/assets/asyncawait.png)
 
 ====================================================================================
