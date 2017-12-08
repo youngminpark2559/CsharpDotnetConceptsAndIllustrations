@@ -1,4 +1,6 @@
-DotnetAssembly.png![](/assets/DotnetAssembly.png)
+DotnetAssembly.png![](/assets/DotnetAssembly.png)![](/assets/DotnetAssembly.png)
+
+![](/assets/DotnetAssembly.png)
 
 Ref.
 
