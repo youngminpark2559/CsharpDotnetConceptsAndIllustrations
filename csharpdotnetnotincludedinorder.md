@@ -12,7 +12,7 @@ Updated illustration from:
 
 [https://stackoverflow.com/questions/47492801/c-sharp-async-and-await-feature-and-threads](https://www.gitbook.com/book/youngmtool/csharpdotnetconceptsandillustrations/edit#)
 
-![](/assets/asyncawaitkeywords.png)![](/assets/asyncawaitkewords.png)![](/assets/asyncawaitkewords.png)
+![](/assets/asyncawaitkeywords.png)![](/assets/asyncawaitkewords.png)![](/assets/asyncawaitkewords.png)![](/assets/asyncawaitkewords.png)
 
 ====================================================================================
 
