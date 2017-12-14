@@ -5,4 +5,5 @@
 * [CsharpDotnet](csharpdotnet.md)
 * [StratisBitcoinFullNode\src\Stratis.Bitcoin - 1](stratisbitcoinfullnodesrcstratisbitcoin-1.md)
 * [CsharpDotnetNotIncludedInOrder](csharpdotnetnotincludedinorder.md)
+* [CsharpDotnetCh08](csharpdotnetch08.md)
 
