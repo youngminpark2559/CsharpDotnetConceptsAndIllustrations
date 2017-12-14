@@ -8,4 +8,5 @@
 * [CsharpDotnetCh08](csharpdotnetch08.md)
 * [CsharpDotnetCh03](csharpdotnetch03.md)
 * [CsharpDotnetCh04](csharpdotnetch04.md)
+* [CsharpDotnetCh05](csharpdotnetch05.md)
 
