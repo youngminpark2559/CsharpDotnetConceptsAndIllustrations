@@ -7,4 +7,5 @@
 * [CsharpDotnetNotIncludedInOrder](csharpdotnetnotincludedinorder.md)
 * [CsharpDotnetCh08](csharpdotnetch08.md)
 * [CsharpDotnetCh10](csharpdotnetch10.md)
+* [Deep Learning](deep-learning.md)
 
