@@ -32,3 +32,9 @@ Neural Net and back propagation mechanism.
 
 ![](/assets/dl16.png)
 
+
+
+Back propagation for RNN.
+
+![](/assets/r1.png)![](/assets/r2.png)![](/assets/r3.png)![](/assets/r4.png)![](/assets/r5.png)![](/assets/r6.png)
+
