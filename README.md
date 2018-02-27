@@ -1,24 +1,11 @@
 # Illustrations For Concepts
 
-1.
-
-Contents of this book is under being reviewed and fixed.
-
+Notice.
 Some contents could contain wrong concepts.
 
-2.
+1. C# .NET
+[Common compile process of .NET environment language such VB.NET, C#, etc]
+(https://github.com/youngmtool/CsharpDotnetConceptsAndIllustrations/blob/master/DotnetLanguageCompileProcess.md)
 
-If the images show too small, click the "Tab" button next to "A" button.
-
-And zoom in your web browser.
-
-Or you can see raw images on the following Github repository:
 
 [https://github.com/youngmtool/CsharpDotnetConceptsAndIllustration](https://github.com/youngmtool/CsharpDotnetConceptsAndIllustrations)
-
-3.
-
-This book is hosted by Gitbook on this domain:
-
-[https://youngmtool.gitbooks.io/csharpdotnetconceptsandillustrations](https://youngmtool.gitbooks.io/csharpdotnetconceptsandillustrations)
-
